@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import PusherSwift
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -17,6 +19,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//        window?.makeKeyAndVisible()
+        let options = PusherClientOptions(
+            host: .cluster("us2")
+        )
+        
+        let pusher = Pusher(
+            key: "f02a8f0c2462aeefe2d0",
+            options: options
+        )
+        
+        // subscribe to channel and bind to event
+        let channel = pusher.subscribe("my-channel")
+        
+        let _ = channel.bind(eventName: "my-event", callback: { (data: Any?) -> Void in
+            if let data = data as? [String : AnyObject] {
+                if let message = data["message"] as? String {
+                    print(message)
+                }
+            }
+        })
+        
+        pusher.connect()
+        
+
         return true
     }
 
@@ -28,6 +55,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        let options = PusherClientOptions(
+            host: .cluster("us2")
+        )
+        
+        let pusher = Pusher(
+            key: "f02a8f0c2462aeefe2d0",
+            options: options
+        )
+        
+        // subscribe to channel and bind to event
+        let channel = pusher.subscribe("my-channel")
+        
+        let _ = channel.bind(eventName: "my-event", callback: { (data: Any?) -> Void in
+            if let data = data as? [String : AnyObject] {
+                if let message = data["message"] as? String {
+                    print(message)
+                }
+            }
+        })
+        
+        pusher.connect()
+        
+
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
