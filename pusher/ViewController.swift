@@ -12,10 +12,10 @@ import PusherSwift
 
 class AuthRequestBuilder: AuthRequestBuilderProtocol {
     func requestFor(socketID: String, channelName: String) -> URLRequest? {
-        var request = URLRequest(url: URL(string: "http://localhost:9292/builder")!)
+        var request = URLRequest(url: URL(string: "https://yegobox.com/broadcast/auth")!)
         request.httpMethod = "POST"
-        request.httpBody = "socket_id=\(socketID)&channel_name=(channelName)".data(using: String.Encoding.utf8)
-        request.addValue("myToken", forHTTPHeaderField: "Authorization")
+        request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: String.Encoding.utf8)
+        request.addValue("Bearer {token}", forHTTPHeaderField: "Authorization")
         return request
     }
 }
@@ -24,7 +24,7 @@ class AuthRequestBuilder: AuthRequestBuilderProtocol {
 class ViewController: UIViewController {
     
     var pusher = Pusher(
-        key: "f02a8f0c2462aeefe2d0",
+        key: "YourKEy",
         options: PusherClientOptions(
              authMethod: AuthMethod.authRequestBuilder(authRequestBuilder: AuthRequestBuilder()),
              host: .cluster("us2")
@@ -44,7 +44,6 @@ class ViewController: UIViewController {
             }
         })
         
-       
         pusher.connect()
         
         print("we got here")
